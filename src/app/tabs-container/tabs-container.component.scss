@@ -1,0 +1,36 @@
+.route-square {
+  border-radius: .25rem;
+  padding: .375rem .75rem;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  display: inline-block;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #222;
+  color: #fff;
+}
+.name {
+  border: none;
+  padding: 0;
+  transition: 0.6s;
+  width: 100%;
+  &:focus, &:active {
+    box-shadow: 0 0 1px 1px rgb(82, 82, 82);
+    padding: 0 5px;
+  }
+}
+.max-height-list {
+  max-height: 395px;
+  overflow: auto;
+}
+.nav-tabs .nav-link {
+  background-color: #eee;
+}
+.nav-tabs .nav-link.active {
+  background-color: #fff;
+  // font-weight: 700;
+}
+#ticketUl .list-group-item {
+  display: flex;
+}

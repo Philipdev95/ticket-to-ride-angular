@@ -1,0 +1,82 @@
+<ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
+  <li *ngFor="let player of players" class="nav-item" role="presentation">
+    <button class="nav-link {{player.show ? 'active' : ''}}" (click)="tabClick(player.id)" id="tab-{{ player.id }}" data-bs-toggle="tab" data-bs-target="#tab-content-{{ player.id }}" type="button" role="tab" aria-controls="tab-content-{{ player.id }}" aria-selected="true">
+      {{ player.name }} <span class="text-success">({{ player.totalPoints }})</span>
+    </button>
+  </li>
+</ul>
+<div class="col-12 tab-content" id="myTabContent">
+  <div *ngFor="let player of players" class="tab-pane fade {{player.show ? 'show active' : ''}}" id="tab-content-{{ player.id }}" role="tabpanel" aria-labelledby="tab-{{ player.id }}">
+    <div class="row">
+      <div class="col">
+        <label class="text-muted"><small>Name</small></label>
+        <h2>
+          <input class="name" value="{{ player.name }}" (keyup)="onKey($event, player)">
+        </h2>
+      </div>
+      <div class="col">
+        <label class="text-muted"><small>Points:</small></label>
+        <h2>{{ player.totalPoints }}</h2>
+      </div>
+      <div class="col-3">
+        <label class="text-muted"><small>Routes:</small></label>
+        <ul style="overflow-x: auto; padding-bottom: 15px" class="col-12 list-group list-group-horizontal">
+          <li class="list-group-item bg-dark text-light px-2 py-1" *ngFor="let playerRoute of player.routes">
+            {{ playerRoute }}
+          </li>
+        </ul>
+      </div>
+      <div class="col d-none">
+        <label class="text-muted"><small>Completed Tickets:</small></label>
+        <div class="list-group max-height-list">
+          <div class="list-group-item" *ngFor="let ticket of player.completedTickets">
+            {{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="route-square col-auto m-1" *ngFor="let route of routePoints">
+      <div class="row align-items-center">
+        <div class="col">
+          <h4 class="m-0">{{ route.length }}</h4>
+          <small>(+{{ route.points }})</small>
+        </div>
+        <div style="padding-left: 0" class="btn-group-vertical col-auto" role="group" aria-label="add or remove routes">
+          <button style="background: #444; font-weight: 700;" (click)="routeClick('+', route, player.id)" class="btn btn-dark text-success" type="button">+</button>
+          <button style="background: #444; font-weight: 700;" (click)="routeClick('-', route, player.id)" class="btn btn-dark text-danger" type="button">-</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 bg-dark px-5 py-3">
+      <div class="row">
+        <div class="col-6">
+          <h4 class="text-light">All tickets</h4>
+          <input (keyup)="filter('ticketUl', $event)" class="form-control col-12" placeholder="Filter">
+          <div id="ticketUl" class="list-group max-height-list">
+            <div class="list-group-item align-items-center justify-content-between" *ngFor="let ticket of ticketsEurope">
+              <span>{{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})</span>
+              <div>
+                <button style="font-weight: 700;" (click)="changeTicket(player, ticket)" class="btn btn-light text-success  {{ ticket.selected ? 'd-none' : '' }}">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <h4 class="text-light">{{ player.name }}'s tickets</h4>
+          <div class="list-group max-height-list">
+            <div class="list-group-item d-flex align-items-center justify-content-between" *ngFor="let ticket of player.completedTickets">
+              <span>{{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})</span>
+              <button style="font-weight: 700;" (click)="changeTicket(player, ticket)" class="btn btn-light text-danger {{ ticket.selected ? '' : 'd-none' }}">-</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+  </div>
+</div>
+<div class="col-12 py-3">
+  <div class="row justify-content-center">
+    <button class="mx-1 col-auto btn btn-success" (click)="saveLocalstorage('data', players); saveLocalstorage('tickets', ticketsEurope)">Save scores</button>
+    <button class="mx-1 col-auto btn btn-danger" (click)="clearLocalstorage()">Clear data</button>
+  </div>
+</div>
