@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "phro9597-1": {
+      "hosting": {
+        "my-app": [
+          "phro9597-1"
+        ]
+      }
+    }
+  }
+}

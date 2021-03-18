@@ -25,23 +25,7 @@ export class TabsContainerComponent implements OnInit {
       show: true,
       totalPoints: 0,
       routes: [],
-      completedTickets: []
-    },
-    {
-      id: 1,
-      name: 'Player 2',
-      show: false,
-      totalPoints: 0,
-      routes: [],
-      completedTickets: []
-    },
-    {
-      id: 2,
-      name: 'Player 3',
-      show: false,
-      totalPoints: 0,
-      routes: [],
-      completedTickets: []
+      playerTickets: []
     }
   ]
   constructor() { }
@@ -67,13 +51,19 @@ export class TabsContainerComponent implements OnInit {
   changeTicket(playr, ticket) {
     if (ticket.selected) { // remove
       ticket.selected = false
-      playr.completedTickets.splice(playr.completedTickets.indexOf(ticket), 1)
+      playr.playerTickets.splice(playr.playerTickets.indexOf(ticket), 1)
       playr.totalPoints += parseInt('-' + ticket.points)
     } else { // add
       ticket.selected = true
-      playr.completedTickets.push(ticket)
+      playr.playerTickets.push(ticket)
       playr.totalPoints += parseInt(ticket.points)
     }
+  }
+
+  failCheckbox (tick, e) {
+    e.target.checked = tick.completed
+    tick.completed ? tick.completed = false : tick.completed = true
+    tick.completed ? this.changePoints(tick.points * 2) : this.changePoints('-' + (tick.points * 2)) 
   }
 
   tabClick(playerid): void {
@@ -108,6 +98,29 @@ export class TabsContainerComponent implements OnInit {
 
   onKey(e, playr): void {
     this.players[playr.id].name = e.target.value
+  }
+
+  addPlayer () {
+    const newPlayer = {
+      id: this.players.length,
+      name: 'Player ' + (this.players.length + 1),
+      show: false,
+      totalPoints: 0,
+      routes: [],
+      playerTickets: []
+    }
+    this.players.push(newPlayer)
+    this.players.map((p, i) => {p.show = false})
+    this.players[this.players.length - 1].show = true
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }
+
+  deletePlayer (player) {
+    this.players.splice(player.id, 1)
+    this.players[this.players.length - 1].show = true
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
   ngOnInit(): void {
