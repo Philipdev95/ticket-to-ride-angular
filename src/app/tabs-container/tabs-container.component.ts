@@ -30,6 +30,18 @@ export class TabsContainerComponent implements OnInit {
   ]
   constructor() { }
 
+  abc (rl, pl) {
+    var count = 0;
+    if (pl.routes.includes(rl)) {
+      for(var i = 0; i < pl.routes.length; ++i){
+        if (pl.routes[i] == rl) {
+          count++;
+        }
+      }
+    }
+    return count
+  }
+
   filter (ulid:string, e) {
     // Declare variables
     var filter:string, ul, li, a, i:number, txtValue:string

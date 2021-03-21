@@ -43,16 +43,16 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
+
       <div class="col-4 col-md-auto" *ngFor="let route of routePoints">
         <div class="row p-1">
           <div class="col route-square">
-
             <div class="row align-items-center">
               <div class="col">
                 <h4 class="m-0">{{ route.length }}</h4>
-                <small>(+{{ route.points }})</small>
+                <small>
+                  {{ abc(route.length, player) }}
+                  <span class="text-muted"> * {{ route.points }}p</span></small>
               </div>
               <div style="padding-left: 0" class="btn-group-vertical col-auto" role="group" aria-label="add or remove routes">
                 <button style="background: #444; font-weight: 700;" (click)="routeClick('+', route, player.id)" class="btn btn-dark text-success" type="button">+</button>
@@ -61,8 +61,11 @@
             </div>
           </div>
         </div>
-
       </div>
+
+    </div>
+    <div class="row">
+
     </div>
     <div class="row">
       <div class="col-12 route-square p-2 px-md-4 py-md-3">
