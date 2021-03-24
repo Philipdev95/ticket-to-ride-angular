@@ -25,7 +25,8 @@ export class TabsContainerComponent implements OnInit {
       show: true,
       totalPoints: 0,
       routes: [],
-      playerTickets: []
+      playerTickets: [],
+      longestPath: false,
       colorId: null
     }
   ]
@@ -41,7 +42,7 @@ export class TabsContainerComponent implements OnInit {
   ]
   constructor() { }
 
-  abc (rl, pl) {
+  displayAmountOfRoute (rl, pl) {
     var count = 0;
     if (pl.routes.includes(rl)) {
       for(var i = 0; i < pl.routes.length; ++i){
@@ -79,6 +80,8 @@ export class TabsContainerComponent implements OnInit {
   changeTicket(playr, ticket) {
     if (ticket.selected) { // remove
       ticket.selected = false
+      ticket.completed ? console.log(ticket) : this.changePoints(ticket.points * 2)
+      ticket.completed = true
       playr.playerTickets.splice(playr.playerTickets.indexOf(ticket), 1)
       playr.totalPoints += parseInt('-' + ticket.points)
     } else { // add
@@ -91,7 +94,13 @@ export class TabsContainerComponent implements OnInit {
   failCheckbox (tick, e) {
     e.target.checked = tick.completed
     tick.completed ? tick.completed = false : tick.completed = true
-    tick.completed ? this.changePoints(tick.points * 2) : this.changePoints('-' + (tick.points * 2)) 
+    tick.completed ? this.changePoints(tick.points * 2) : this.changePoints('-' + (tick.points * 2))
+  }
+
+  expressBonusCheck (playr, e) {
+    playr.longestPath ? playr.longestPath = false : playr.longestPath = true
+    e.target.checked = playr.longestPath
+    playr.longestPath ? this.changePoints(10) : this.changePoints(-10)
   }
 
   tabClick(playerid): void {
@@ -129,19 +138,23 @@ export class TabsContainerComponent implements OnInit {
   }
 
   addPlayer () {
-    const newPlayer = {
-      id: this.players.length,
-      name: 'Player ' + (this.players.length + 1),
-      show: false,
-      totalPoints: 0,
-      routes: [],
-      playerTickets: []
+    if (this.players.length < 7) {
+      const newPlayer = {
+        id: this.players.length,
+        name: 'Player ' + (this.players.length + 1),
+        show: false,
+        totalPoints: 0,
+        routes: [],
+        playerTickets: [],
+        longestPath: false,
+        colorId: null
+      }
+      this.players.push(newPlayer)
+      this.players.map((p, i) => {p.show = false})
+      this.players[this.players.length - 1].show = true
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
-    this.players.push(newPlayer)
-    this.players.map((p, i) => {p.show = false})
-    this.players[this.players.length - 1].show = true
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
   deletePlayer (player) {
