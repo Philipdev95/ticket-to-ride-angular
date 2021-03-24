@@ -176,11 +176,18 @@ export class TabsContainerComponent implements OnInit {
 
   ngOnInit(): void {
     // check localstorage
-    if (!localStorage.getItem('data')) {
-      localStorage.setItem('data', JSON.stringify(this.players))
+    // console.log(new Date().getTime())
+    if (parseInt(localStorage.getItem('lastSavedData')) < 1616576029140) {
+      this.clearLocalstorage()
     } else {
-      this.players = JSON.parse(localStorage.getItem('data'))
+      if (!localStorage.getItem('data')) {
+        localStorage.setItem('data', JSON.stringify(this.players))
+        localStorage.setItem('lastSavedData', (new Date().getTime().toString()))
+      } else {
+        this.players = JSON.parse(localStorage.getItem('data'))
+      }
     }
+    
   }
 
 }
