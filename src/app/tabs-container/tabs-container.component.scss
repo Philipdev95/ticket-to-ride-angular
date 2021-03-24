@@ -1,3 +1,12 @@
+$color-0: rgb(253, 220, 90);
+$color-1: rgb(22, 91, 173);
+$color-2: rgb(40, 40, 40);
+$color-3: rgb(216, 12, 12);
+$color-4: rgb(115, 172, 67);
+$color-5: rgb(246, 133, 33);
+$color-6: rgb(228, 228, 228);
+$color-7: rgb(229, 162, 199);
+
 .route-square {
   border-radius: .25rem;
   padding: .375rem .75rem;
@@ -9,27 +18,67 @@
   background-color: #222;
   color: #fff;
 }
+.text- {
+  color: white;
+}
+.border- {
+  color: white;
+}
 .name {
   border: none;
   padding: 0;
   transition: 0.6s;
   width: 100%;
+  background: transparent;
   &:focus, &:active {
     box-shadow: 0 0 1px 1px rgb(82, 82, 82);
     padding: 0 5px;
   }
 }
+select, input {
+  background: transparent;
+  color: #dee2e6;
+  &:active, &:focus {
+    background: transparent;
+    color: #dee2e6;
+  }
+}
+.expressbonus {
+  font-size: 1.5rem;
+}
 .max-height-list {
   max-height: 250px;
   overflow: auto;
 }
-.nav-tabs .nav-link {
-  background-color: #eee;
+.main-labels {
+  font-size: .875rem;
+  color: #6c757d;
 }
-.nav-tabs .nav-link.active {
-  background-color: #fff;
-  // font-weight: 700;
+.nav-tabs .nav-item .nav-link {
+  border-width: 1px!important;
+  &.active {
+    color: white;
+    background: #000;
+    border-width: 1.5px!important;
+  }
 }
+.text-0 {color: $color-0!important}
+.text-1 {color: $color-1!important}
+.text-2 {color: $color-2!important}
+.text-3 {color: $color-3!important}
+.text-4 {color: $color-4!important}
+.text-5 {color: $color-5!important}
+.text-6 {color: $color-6!important}
+.text-7 {color: $color-7!important}
+.border-0 {border-color: $color-0!important}
+.border-1 {border-color: $color-1!important}
+.border-2 {border-color: $color-2!important}
+.border-3 {border-color: $color-3!important}
+.border-4 {border-color: $color-4!important}
+.border-5 {border-color: $color-5!important}
+.border-6 {border-color: $color-6!important}
+.border-7 {border-color: $color-7!important}
+
 .list-group .list-group-item {
   display: flex;
   background-color: transparent;

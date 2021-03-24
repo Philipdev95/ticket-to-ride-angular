@@ -6,7 +6,7 @@
 </div>
 <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
   <li *ngFor="let player of players" class="nav-item" role="presentation">
-    <button class="nav-link {{player.show ? 'active' : ''}}" (click)="tabClick(player.id)" id="tab-{{ player.id }}" data-bs-toggle="tab" data-bs-target="#tab-content-{{ player.id }}" type="button" role="tab" aria-controls="tab-content-{{ player.id }}" aria-selected="true">
+    <button class="nav-link {{player.show ? 'active' : ''}} text-{{ player.colorId }} border-{{ player.colorId }}" (click)="tabClick(player.id)" id="tab-{{ player.id }}" data-bs-toggle="tab" data-bs-target="#tab-content-{{ player.id }}" type="button" role="tab" aria-controls="tab-content-{{ player.id }}" aria-selected="true">
       {{ player.name }}
     </button>
   </li>
@@ -15,28 +15,27 @@
   </li>
 </ul>
 <div class="col-12 tab-content pb-5" id="myTabContent">
-  <div class="container-fluid p-1 tab-pane fade {{player.show ? 'show active' : ''}}" *ngFor="let player of players" id="tab-content-{{ player.id }}" role="tabpanel" aria-labelledby="tab-{{ player.id }}">
+  <div class="container-fluid p-1 tab-pane fade {{ player.show ? 'show active' : '' }}" *ngFor="let player of players" id="tab-content-{{ player.id }}" role="tabpanel" aria-labelledby="tab-{{ player.id }}">
     <div class="row">
       <div class="col">
-        <label class="text-muted"><small>Name</small></label>
+        <label class="main-labels">Name:</label>
         <h2>
-          <input class="name" value="{{ player.name }}" (keyup)="onKey($event, player)">
+          <input class="text-{{ player.colorId }} name" value="{{ player.name }}" (keyup)="onKey($event, player)" type="text">
         </h2>
       </div>
-      <div class="col-auto">
-        <label class="text-muted"><small>Points:</small></label>
-        <h2>{{ player.totalPoints }}</h2>
+      <div class="col-4" style="text-align: right;">
+        <label class="main-labels">Points:</label>
+        <h2 class="text-{{ player.colorId }}">{{ player.totalPoints }}</h2>
       </div>
-      <div class="col-12 col-md-auto">
-        <label class="text-muted"><small>Routes:</small></label>
-        <ul style="overflow-x: auto; padding-bottom: 15px" class="col-12 list-group list-group-horizontal">
-          <li class="list-group-item bg-dark text-light px-2 py-1" *ngFor="let playerRoute of player.routes">
-            {{ playerRoute }}
-          </li>
-        </ul>
+      <div class="col-6 col-md-auto">
+        <label class="main-labels">Color:</label>
+        <select (change)="colorSelect(player, $event)" id="colorselect-{{ player.id }}" class="form-select" aria-label="Player color selector">
+          <option selected>Change color</option>
+          <option *ngFor="let color of colors" value="{{ color.id }}">{{ color.name }}</option>
+        </select>
       </div>
       <div class="col d-none">
-        <label class="text-muted"><small>Completed Tickets:</small></label>
+        <label class="main-labels">Completed Tickets:</label>
         <div class="list-group max-height-list">
           <div class="list-group-item" *ngFor="let ticket of player.playerTickets">
             {{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})

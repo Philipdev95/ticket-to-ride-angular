@@ -26,7 +26,18 @@ export class TabsContainerComponent implements OnInit {
       totalPoints: 0,
       routes: [],
       playerTickets: []
+      colorId: null
     }
+  ]
+  colors = [
+    { id: 0, name: 'Yellow', color: 'rgb(253, 220, 90)'},
+    { id: 1, name: 'Blue', color: 'rgb(22, 91, 173)'},
+    { id: 2, name: 'Black', color: 'rgb(40, 40, 40)'},
+    { id: 3, name: 'Red', color: 'rgb(216, 12, 12)'},
+    { id: 4, name: 'Green', color: 'rgb(115, 172, 67)'},
+    { id: 5, name: 'Orange', color: 'rgb(246, 133, 33)'},
+    { id: 6, name: 'White', color: 'rgb(228, 228, 228)'},
+    { id: 7, name: 'Pink', color: 'rgb(229, 162, 199)'},
   ]
   constructor() { }
 
@@ -40,6 +51,11 @@ export class TabsContainerComponent implements OnInit {
       }
     }
     return count
+  }
+
+  colorSelect(p, e) {
+    p.colorId = e.target.value
+    console.log(e.target)
   }
 
   filter (ulid:string, e) {
