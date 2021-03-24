@@ -137,7 +137,8 @@ export class TabsContainerComponent implements OnInit {
         routes: [],
         playerTickets: [],
         longestPath: false,
-        colorId: null
+        colorId: null,
+        stations: 3
       }
       this.players.push(newPlayer)
       this.players.map((p, i) => {p.show = false})
