@@ -54,14 +54,53 @@ export class AppComponent {
     { from: 'Zurich', to: 'Brindisi', points: 6, selected: false, completed: true},
     { from: 'Zurich', to: 'Budapest', points: 6, selected: false, completed: true}
   ]
-
-  saveLocalstorage (locStoStr, jsobj) {
-    localStorage.setItem(locStoStr, JSON.stringify(jsobj))
+  toastMsg:string = 'It´s done.'
+  players = [
+    {
+      id: 0,
+      name: 'Player 1',
+      show: true,
+      totalPoints: 0,
+      routes: [],
+      playerTickets: [],
+      longestPath: false,
+      colorId: null,
+      stations: 0
+    }
+  ]
+  
+  saveLocalstorage () {
+    try {
+      localStorage.setItem('data', JSON.stringify(this.players))
+      localStorage.setItem('tickets', JSON.stringify(this.ticketsEurope))
+      localStorage.setItem('lastSavedData', (new Date().getTime().toString()))
+      this.openToast('Data saved. You´re welcome!')
+    } catch (err) {
+      this.openToast('Issue with saving data, data has been reset. Sorry not sorry.')
+      this.clearLocalstorage()
+    }
   }
 
   clearLocalstorage () {
+    this.openToast('Clearing all data and refreshing')
     localStorage.clear()
-    window.location.reload(true)
+    setTimeout(() => {
+      window.location.reload(true)
+    }, 1000)
+  }
+
+  closeToast() {
+    try {
+      document.querySelector('#toast').classList.remove('show')
+    } catch (er) {
+      console.log(er)
+    } 
+  }
+
+  openToast(msg:string) {
+    this.toastMsg = msg
+    document.querySelector('#toast').classList.add('show')
+    setTimeout(() => this.closeToast(), 4000)
   }
   title = 'Ticket to ride calculator';
 

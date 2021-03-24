@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-app-header',
@@ -6,6 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent implements OnInit {
+  @Input() clearLocalstorage
+  @Input() saveLocalstorage
+  @Input() ticketsEurope
+  @Input() players
+  @Input() openToast
+  @Input() closeToast
+  @Input() toastMsg
 
   constructor() { }
 

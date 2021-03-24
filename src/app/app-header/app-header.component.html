@@ -1,7 +1,9 @@
 <nav class="navbar navbar-dark">
-  <div class="container-fluid">
-    <span class="navbar-brand">
-      <img style="height: 60px; max-width: 100%;" src="assets/img/ttorcalc-logo.png">
-    </span>
+  <span class="navbar-brand">
+    <img style="width: 400px; max-width: 100%;" src="assets/img/ttorcalc-logo.png">
+  </span>
+  <div class="navbar-btns">
+    <button class="m-1 btn btn-sm col col-md-auto btn-success" (click)="saveLocalstorage()">Save players</button>
+    <button class="m-1 btn btn-sm col-auto btn-danger" (click)="clearLocalstorage()">Reset all</button>
   </div>
 </nav>

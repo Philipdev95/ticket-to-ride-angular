@@ -1,0 +1,6 @@
+.toast {
+  display: none;
+  &.show {
+    display: block;
+  }
+}
