@@ -6,31 +6,22 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./tabs-container.component.scss']
 })
 export class TabsContainerComponent implements OnInit {
-  @Input() clearLocalstorage
-  @Input() saveLocalstorage
-  @Input() ticketsEurope
-  routePoints = [
+  @Input() clearLocalstorage:any
+  @Input() saveLocalstorage:any
+  @Input() ticketsEurope:any
+  @Input() players:any
+  errorMsgStations:string
+  errorMsgRoutes:string
+  routePoints:any = [
     { length: 1, points: 1 },
     { length: 2, points: 2 },
     { length: 3, points: 4 },
     { length: 4, points: 7 },
-    // { length: 5, points: 10 },
     { length: 6, points: 15 },
     { length: 8, points: 21 }
   ]
-  players = [
-    {
-      id: 0,
-      name: 'Player 1',
-      show: true,
-      totalPoints: 0,
-      routes: [],
-      playerTickets: [],
-      longestPath: false,
-      colorId: null
-    }
-  ]
-  colors = [
+  pointsPerStation:number = 4
+  colors:any = [
     { id: 0, name: 'Yellow', color: 'rgb(253, 220, 90)'},
     { id: 1, name: 'Blue', color: 'rgb(22, 91, 173)'},
     { id: 2, name: 'Black', color: 'rgb(40, 40, 40)'},
@@ -42,10 +33,10 @@ export class TabsContainerComponent implements OnInit {
   ]
   constructor() { }
 
-  displayAmountOfRoute (rl, pl) {
-    var count = 0;
+  displayAmountOfRoute (rl:any, pl:any): number {
+    let count = 0;
     if (pl.routes.includes(rl)) {
-      for(var i = 0; i < pl.routes.length; ++i){
+      for(let i = 0; i < pl.routes.length; ++i){
         if (pl.routes[i] == rl) {
           count++;
         }
@@ -54,14 +45,13 @@ export class TabsContainerComponent implements OnInit {
     return count
   }
 
-  colorSelect(p, e) {
+  colorSelect(p:any, e:any) {
     p.colorId = e.target.value
-    console.log(e.target)
   }
 
-  filter (ulid:string, e) {
+  filter (ulid:string, e:any) {
     // Declare variables
-    var filter:string, ul, li, a, i:number, txtValue:string
+    var filter:string, ul:any, li:any, a:any, i:number, txtValue:string
     filter = e.target.value.toUpperCase()
     ul = document.getElementById(ulid)
     li = ul.getElementsByClassName('list-group-item')
@@ -77,7 +67,7 @@ export class TabsContainerComponent implements OnInit {
     }
   }
 
-  changeTicket(playr, ticket) {
+  changeTicket(playr:any, ticket:any) {
     if (ticket.selected) { // remove
       ticket.selected = false
       ticket.completed ? console.log(ticket) : this.changePoints(ticket.points * 2)
@@ -91,26 +81,26 @@ export class TabsContainerComponent implements OnInit {
     }
   }
 
-  failCheckbox (tick, e) {
+  failCheckbox (tick:any, e:any) {
     e.target.checked = tick.completed
     tick.completed ? tick.completed = false : tick.completed = true
     tick.completed ? this.changePoints(tick.points * 2) : this.changePoints('-' + (tick.points * 2))
   }
 
-  expressBonusCheck (playr, e) {
+  expressBonusCheck (playr:any, e:any) {
     playr.longestPath ? playr.longestPath = false : playr.longestPath = true
     e.target.checked = playr.longestPath
     playr.longestPath ? this.changePoints(10) : this.changePoints(-10)
   }
 
-  tabClick(playerid): void {
-    this.players.map((playr, i) => {
+  tabClick (playerid:number): void {
+    this.players.map((playr:any, i:number) => {
       playr.show = false
     })
     this.players[playerid].show = true
   }
 
-  routeClick(add:string, route, user:number): void {
+  routeClick (add:string, route:any, user:number): void {
     let x = add + route.points
     if (add === '-' && this.players[user].routes.includes(route.length)) {
       this.players[user].routes.splice(this.players[user].routes.indexOf(route.length), 1)
@@ -123,7 +113,7 @@ export class TabsContainerComponent implements OnInit {
     
   }
 
-  changePoints(val): void {
+  changePoints (val:any): void {
     let x
     this.players.map((playr, i) => {
       if (playr.show) {
@@ -133,11 +123,11 @@ export class TabsContainerComponent implements OnInit {
     this.players[x].totalPoints += parseInt(val)
   }
 
-  onKey(e, playr): void {
+  onKey (e:any, playr:any): void {
     this.players[playr.id].name = e.target.value
   }
 
-  addPlayer () {
+  addPlayer (): void {
     if (this.players.length < 7) {
       const newPlayer = {
         id: this.players.length,
@@ -157,7 +147,27 @@ export class TabsContainerComponent implements OnInit {
     }
   }
 
-  deletePlayer (player) {
+  changeStations (add:any, player:any): void {
+    if (add) {
+      if (player.stations !== 3) {
+        player.stations++
+        this.changePoints(this.pointsPerStation)
+      } else {
+        this.errorMsgStations = 'Max 3 stations'
+        setTimeout(() => this.errorMsgStations = '', 2500)
+      }
+    } else {
+      if (player.stations !== 0) {
+        player.stations--
+        this.changePoints(-this.pointsPerStation)
+      } else {
+        this.errorMsgStations = 'Minimum 0 stations'
+        setTimeout(() => this.errorMsgStations = '', 2500)
+      }
+    }
+  }
+
+  deletePlayer (player:any): void {
     this.players.splice(player.id, 1)
     this.players[this.players.length - 1].show = true
     document.body.scrollTop = 0; // For Safari
