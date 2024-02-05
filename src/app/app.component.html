@@ -1,60 +1,28 @@
-<style>
-  .terminal {
-    position: relative;
-    max-width: 600px;
-    border-radius: 6px;
-    padding-top: 45px;
-    margin-top: 8px;
-    overflow: hidden;
-    background-color: rgb(15, 15, 16);
-  }
 
-  .terminal::before {
-    content: "\2022 \2022 \2022";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: rgb(58, 58, 58);
-    color: #c2c3c4;
-    width: 100%;
-    font-size: 2rem;
-    line-height: 0;
-    padding: 14px 0;
-    text-indent: 4px;
-  }
+<app-app-header [toastMsg]="toastMsg" [openToast]="openToast" [closeToast]="closeToast" [players]="players" [clearLocalstorage]="clearLocalstorage" [activeMap]="activeMap" [saveLocalstorage]="saveLocalstorage"></app-app-header>
 
-  .terminal pre {
-    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-    color: white;
-    padding: 0 1rem 1rem;
-    margin: 0;
-  }
-  /* Responsive Styles */
-  @media screen and (max-width: 767px) {
-
-    .terminal {
-      width: 100%;
-    }
-  }
-  .min-h-100 {
-    min-height: calc(100vh - 120px);
-  }
-</style>
-
-<app-app-header [toastMsg]="toastMsg" [openToast]="openToast" [closeToast]="closeToast" [players]="players" [clearLocalstorage]="clearLocalstorage" [ticketsEurope]="ticketsEurope" [saveLocalstorage]="saveLocalstorage"></app-app-header>
+<router-outlet></router-outlet>
 <div class="container min-h-100" role="main">
   <!-- Resources -->
-  <app-tabs-container [players]="players" [clearLocalstorage]="clearLocalstorage" [ticketsEurope]="ticketsEurope" [saveLocalstorage]="saveLocalstorage" class="row"></app-tabs-container>
-  
-    <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem;">
-      <div class="toast-header">
-        <strong style="margin-right:auto">Alert</strong>
-        <small class="btn btn-sm p-0" (click)="closeToast()">Close</small>
-      </div>
-      <div class="toast-body">
-        {{ toastMsg }}
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <select (change)="mapChange($event)" class="form-select" aria-label="Default select example">
+        <option selected>Change map</option>
+        <option *ngFor="let map of maps" value="{{ map.id }}">{{ map.name }}</option>
+      </select>
     </div>
+  </div>
+  
+  <app-tabs-container [toastMsg]="toastMsg" [openToast]="openToast" [closeToast]="closeToast" [players]="players" [clearLocalstorage]="clearLocalstorage" [activeMap]="activeMap" [saveLocalstorage]="saveLocalstorage" class="row"></app-tabs-container>
+  
+  <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem;">
+    <div class="toast-header">
+      <strong style="margin-right:auto">Alert</strong>
+      <small class="btn btn-sm p-0" (click)="closeToast()">Close</small>
+    </div>
+    <div class="toast-body">
+      {{ toastMsg }}
+    </div>
+  </div>
   
 </div>

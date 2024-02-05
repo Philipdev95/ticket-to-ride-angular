@@ -1,11 +1,25 @@
 <ul class="col-12 nav nav-tabs" id="myTab" role="tablist">
   <li *ngFor="let player of players" class="nav-item" role="presentation">
-    <button class="nav-link {{player.show ? 'active' : ''}} text-{{ player.colorId }} border-{{ player.colorId }}" (click)="tabClick(player.id)" id="tab-{{ player.id }}" data-bs-toggle="tab" data-bs-target="#tab-content-{{ player.id }}" type="button" role="tab" aria-controls="tab-content-{{ player.id }}" aria-selected="true">
+    <button 
+      class="player-tab nav-link {{player.show ? 'active' : ''}} text-{{ player.colorId }} border-color-{{ player.colorId }}"
+      id="tab-{{ player.id }}"
+      data-bs-toggle="tab"
+      data-bs-target="#tab-content-{{ player.id }}"
+      type="button"
+      role="tab"
+      aria-controls="tab-content-{{ player.id }}"
+      aria-selected="true"
+      (click)="tabClick(player.id)">
       {{ player.name }}
+      <svg class="{{ player.show ? '' : 'd-none'}} deletePlayerBtn" (click)="deletePlayer(player)" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+      </svg>
     </button>
   </li>
   <li class="nav-item" role="presentation">
-    <button (click)="addPlayer()" style="border-radius: 40px!important; transform: scale(.8);" class="nav-link text-success" id="addPlayerTab" data-bs-toggle="tab" type="button"  aria-selected="true">+</button>
+    <button (click)="addPlayer()" class="{{ players.length < 7 ? '' : 'd-none' }} nav-link nav-add bg-success text-light" id="addPlayerTab" data-bs-toggle="tab" type="button"  aria-selected="true">
+      <span class="add">+</span>
+    </button>
   </li>
 </ul>
 <div class="col-12 tab-content pb-5" id="myTabContent">
@@ -34,7 +48,7 @@
       </div>
 
       <div class="col-auto">
-        <label class="main-labels">Express bonus?</label>
+        <label class="main-labels">Express bonus?<small>(+10)</small></label>
         <div class="col-12">
           <input class="form-check-input d-none expressbonus" (change)="expressBonusCheck(player, $event)" id="expressbonus-{{ player.id }}" type="checkbox">
           <label class="py-0 btn btn-{{ player.longestPath ? 'success' : 'danger' }} form-check-label expressbonus mx-1" for="expressbonus-{{ player.id }}">{{ player.longestPath ? 'Yes' : 'No' }}</label>
@@ -45,8 +59,13 @@
     <div class="row">
 
       <div class="col-12 col-md-6 col-lg-3">
-        <label class="main-labels">Stations: <span class="text-danger">{{ errorMsgStations }}</span></label>
-        <div class="row p-1">
+        <label class="main-labels" data-bs-toggle="collapse" data-bs-target="#stationsCollapse" aria-expanded="false" aria-controls="stationsCollapse">
+          Stations: <span class="text-danger">{{ errorMsgStations }}</span>
+          <button class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/></svg>
+          </button>
+        </label>
+        <div class="row p-1 collapse" id="stationsCollapse">
           <div class="col route-square">
             <div class="row align-items-center">
               <div class="col">
@@ -56,8 +75,8 @@
                   <span class="text-muted"> * {{ pointsPerStation }}</span></small>
               </div>
               <div style="padding-left: 0" class="btn-group-vertical col-auto" role="group" aria-label="add or remove routes">
-                <button style="background: #444; font-weight: 700;" (click)="changeStations(true, player)" class="btn btn-dark text-success" type="button">+</button>
-                <button style="background: #444; font-weight: 700;" (click)="changeStations(false, player)" class="btn btn-dark text-danger" type="button">-</button>
+                <button style="font-weight: 700;" (click)="changeStations(true, player)" class="btn btn-dark text-success" type="button">+</button>
+                <button style="font-weight: 700;" (click)="changeStations(false, player)" class="btn btn-dark text-danger" type="button">-</button>
               </div>
             </div>
           </div>
@@ -65,8 +84,14 @@
       </div>
 
       <div class="col-12 col-md-9">
-        <div class="row">
-          <label class="main-labels">Routes: <span class="text-danger">{{ errorMsgRoutes }}</span></label>
+
+        <label class="main-labels" data-bs-toggle="collapse" data-bs-target="#routesCollapse" aria-expanded="false" aria-controls="routesCollapse">
+          Routes: <span class="text-danger">{{ errorMsgRoutes }}</span>
+          <button class="btn btn-secondary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/></svg>
+          </button>
+        </label>
+        <div class="row collapse" id="routesCollapse">
           <div class="col-4 col-md-2" *ngFor="let route of routePoints">
             <div class="row p-1">
               <div class="col route-square">
@@ -75,11 +100,12 @@
                     <h4 class="m-0">{{ route.length }}</h4>
                     <small>
                       <span style="font-weight: 100">{{ displayAmountOfRoute(route.length, player) }}</span>
-                      <span class="text-muted"> * {{ route.points }}</span></small>
+                      <span class="text-muted"> * {{ route.points }}</span>
+                    </small>
                   </div>
                   <div style="padding-left: 0" class="btn-group-vertical col-auto" role="group" aria-label="add or remove routes">
-                    <button style="background: #444; font-weight: 700;" (click)="routeClick('+', route, player.id)" class="btn btn-dark text-success" type="button">+</button>
-                    <button style="background: #444; font-weight: 700;" (click)="routeClick('-', route, player.id)" class="btn btn-dark text-danger" type="button">-</button>
+                    <button style="font-weight: 700;" (click)="routeClick('+', route, player.id)" class="btn btn-dark text-success" type="button">+</button>
+                    <button style="font-weight: 700;" (click)="routeClick('-', route, player.id)" class="btn btn-dark text-danger" type="button">-</button>
                   </div>
                 </div>
               </div>
@@ -90,12 +116,19 @@
 
     </div>
     <div class="row">
-      <label class="main-labels">Tickets:</label>
-      <div class="p-1">
+
+      <label class="main-labels" data-bs-toggle="collapse" data-bs-target="#ticketsCollapse" aria-expanded="false" aria-controls="ticketsCollapse">
+        Tickets:
+        <button class="btn btn-secondary btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"/></svg>
+        </button>
+      </label>
+      <div class="p-1 collapse" id="ticketsCollapse">
         <div class="col-12 route-square p-2 px-md-4 py-md-3">
           <div class="row">
             <div class="col-12 col-md-6">
-              <h4 class="text-light">{{ player.name }}'s tickets</h4>
+              <h4 class="mb-0">{{ player.name }}'s tickets</h4>
+              <small>You have {{ player.playerTickets.length }} ticket{{ (player.playerTickets.length === 1) ? '' : 's' }}.</small>
               <div class="list-group max-height-list">
                 <div class="list-group-item d-flex align-items-center justify-content-between pt-1" *ngFor="let ticket of player.playerTickets">
                   <span>{{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})</span>
@@ -103,18 +136,18 @@
                     <input class="form-check-input" (change)="failCheckbox(ticket, $event)" id="{{ ticket.from }}{{ ticket.to }}" type="checkbox">
                     <label class="form-check-label" for="{{ ticket.from }}{{ ticket.to }}">Fail?</label>
                   </div>
-                  <button style="font-weight: 700; background: #444;" (click)="changeTicket(player, ticket)" class="btn btn-dark text-danger {{ ticket.selected ? '' : 'd-none' }}">-</button>
+                  <button style="font-weight: 700;" (click)="changeTicket(player, ticket)" class="btn btn-dark text-danger {{ ticket.selected ? '' : 'd-none' }}">-</button>
                 </div>
               </div>
             </div>
             <div class="col-12 col-md-6">
-              <h4 class="text-light">All tickets</h4>
+              <h4>All tickets</h4>
               <input (keyup)="filter('ticketUl', $event)" class="form-control col-12" placeholder="Filter">
               <div id="ticketUl" class="list-group max-height-list">
-                <div class="list-group-item align-items-center justify-content-between" *ngFor="let ticket of ticketsEurope">
+                <div class="list-group-item align-items-center justify-content-between" *ngFor="let ticket of activeMap">
                   <span class="{{ ticket.selected ? 'text-muted' : '' }}">{{ ticket.from }} -> {{ ticket.to }} (+{{ ticket.points }})</span>
                   <div>
-                    <button style="font-weight: 700; background: #444;" (click)="changeTicket(player, ticket)" class="btn btn-dark text-success  {{ ticket.selected ? 'd-none' : '' }}">+</button>
+                    <button style="font-weight: 700;" (click)="changeTicket(player, ticket)" class="btn btn-dark text-success  {{ ticket.selected ? 'd-none' : '' }}">+</button>
                   </div>
                 </div>
               </div>
@@ -122,8 +155,22 @@
           </div>
         </div>
       </div>
+
     </div>
     <div class="row justify-content-end">
+      <button class="col-auto btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#extraPointsCollapse" aria-expanded="false" aria-controls="extraPointsCollapse">
+        Extra
+      </button>
+      <div class="col-12 collapse" id="extraPointsCollapse">
+        <label class="main-labels">Extra points:</label>
+        <div class="input-group mb-3">
+          <input id="extraPointsInput" value="{{ player.extraPoints }}" type="number" class="form-control" placeholder="Add extra points" aria-label="Add extra points" aria-describedby="extraPointsAdd">
+          <button (click)="extraPoints(player, $event)" data-valueid="extraPointsInput" class="btn btn-outline-success" type="button" id="extraPointsAdd">Add to total</button>
+        </div>
+        <label class="my-0 py-0 main-labels">If you want to change some points because you have special rules or I missed to add something, then you can do that here.<br>Use - before any numbers to remove points.</label>
+      </div>
+    </div>
+    <div class="d-none row justify-content-end">
       <button class="my-1 col-auto btn btn-sm btn-danger" (click)="deletePlayer(player)">Remove player</button>
     </div>
   </div>

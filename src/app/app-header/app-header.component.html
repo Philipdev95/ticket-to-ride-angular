@@ -1,9 +1,25 @@
-<nav class="navbar navbar-dark">
-  <span class="navbar-brand">
-    <img style="width: 400px; max-width: 100%;" src="assets/img/ttorcalc-logo.png">
-  </span>
-  <div class="navbar-btns">
-    <button class="m-1 btn btn-sm col col-md-auto btn-success" (click)="saveLocalstorage()">Save players</button>
-    <button class="m-1 btn btn-sm col-auto btn-danger" (click)="clearLocalstorage()">Reset all</button>
-  </div>
+<nav class="px-1 py-1 navbar navbar-dark navbar-expand">
+  <a class="p-0 m-0 navbar-brand" routerLink="/" routerLinkActive="active">
+    <img style="width: 400px; max-width: 60%;" src="assets/img/ttorcalc-logo.png">
+  </a>
+  <a class="nav-link" (click)="theme()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-lightbulb-fill" viewBox="0 0 16 16">
+      <path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13h-5a.5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm3 8.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+  </a>
+  <a class="nav-link" routerLink="/" routerLinkActive="active">
+    Start
+  </a>
+  <a class="nav-link" routerLink="/about" routerLinkActive="active">
+    About
+  </a>
 </nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <button class="btn btn-sm btn-success" (click)="saveLocalstorage()">Save players</button>
+      <button class="btn btn-sm btn-danger" (click)="clearLocalstorage()">Reset all</button>
+    </div>
+  </div>
+</div>

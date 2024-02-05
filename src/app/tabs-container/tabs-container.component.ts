@@ -8,8 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class TabsContainerComponent implements OnInit {
   @Input() clearLocalstorage:any
   @Input() saveLocalstorage:any
-  @Input() ticketsEurope:any
+  @Input() activeMap:any
   @Input() players:any
+  @Input() toastMsg: string
+  @Input() openToast: any
+  @Input() closeToast: any
   errorMsgStations:string
   errorMsgRoutes:string
   routePoints:any = [
@@ -31,7 +34,18 @@ export class TabsContainerComponent implements OnInit {
     { id: 6, name: 'White', color: 'rgb(228, 228, 228)'},
     { id: 7, name: 'Pink', color: 'rgb(229, 162, 199)'},
   ]
+
   constructor() { }
+
+  colorSelect(p:any, e:any) {
+    p.colorId = e.target.value
+  }
+
+  extraPoints(player:any, e:any) { // if players need to add extra points for expansions, special roules etc.
+    player.totalPoints -= player.extraPoints
+    player.extraPoints = parseInt(e.target.parentNode.firstChild.value)
+    player.totalPoints += parseInt(e.target.parentNode.firstChild.value)
+  }
 
   displayAmountOfRoute (rl:any, pl:any): number {
     let count = 0;
@@ -43,10 +57,6 @@ export class TabsContainerComponent implements OnInit {
       }
     }
     return count
-  }
-
-  colorSelect(p:any, e:any) {
-    p.colorId = e.target.value
   }
 
   filter (ulid:string, e:any) {
@@ -102,9 +112,14 @@ export class TabsContainerComponent implements OnInit {
 
   routeClick (add:string, route:any, user:number): void {
     let x = add + route.points
-    if (add === '-' && this.players[user].routes.includes(route.length)) {
-      this.players[user].routes.splice(this.players[user].routes.indexOf(route.length), 1)
-      this.changePoints(x)
+    if (add === '-') {
+      if (this.players[user].routes.includes(route.length)) {
+        this.players[user].routes.splice(this.players[user].routes.indexOf(route.length), 1)
+        this.changePoints(x)
+      } else {
+        this.errorMsgRoutes = 'There are no more ' + route.length + 's'
+        setTimeout(() => this.errorMsgRoutes = '', 2500)
+      }
     }
     if (add === '+') {
       this.players[user].routes.push(route.length)
@@ -128,24 +143,42 @@ export class TabsContainerComponent implements OnInit {
   }
 
   addPlayer (): void {
+    this.players.sort((a, b) => { // first sort players by id so that we can give correct id
+      return a.id - b.id;
+    });
+    let x:number = this.players.length
+    this.players.map((p, i) => { // check if there's a missing id in current players then assign that id to new player
+      p.show = false
+      if (i !== p.id) {
+        x = i
+      }
+    })
     if (this.players.length < 7) {
       const newPlayer = {
-        id: this.players.length,
-        name: 'Player ' + (this.players.length + 1),
+        id: x,
+        name: 'Player ' + (x + 1),
         show: false,
         totalPoints: 0,
         routes: [],
         playerTickets: [],
         longestPath: false,
         colorId: null,
-        stations: 3
+        stations: 0,
+        extraPoints: 0
       }
       this.players.push(newPlayer)
-      this.players.map((p, i) => {p.show = false})
+      
       this.players[this.players.length - 1].show = true
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
+  }
+
+  deletePlayer (player:any): void {
+    this.players.splice(player.id, 1)
+    this.players[this.players.length - 1].show = true
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
   changeStations (add:any, player:any): void {
@@ -168,27 +201,7 @@ export class TabsContainerComponent implements OnInit {
     }
   }
 
-  deletePlayer (player:any): void {
-    this.players.splice(player.id, 1)
-    this.players[this.players.length - 1].show = true
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
-
   ngOnInit(): void {
-    // check localstorage
-    // console.log(new Date().getTime())
-    if (parseInt(localStorage.getItem('lastSavedData')) < 1616576029140) {
-      this.clearLocalstorage()
-    } else {
-      if (!localStorage.getItem('data')) {
-        localStorage.setItem('data', JSON.stringify(this.players))
-        localStorage.setItem('lastSavedData', (new Date().getTime().toString()))
-      } else {
-        this.players = JSON.parse(localStorage.getItem('data'))
-      }
-    }
-    
   }
 
 }

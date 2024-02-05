@@ -1,5 +1,96 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-html, body {
+.min-h-100 {
+  min-height: calc(100vh - 100px);
+}
+body {
   background-color: #111!important;
+  color:rgb(255, 255, 255);
+  .route-square {
+    background-color: #222;
+    color: #fff;
+    button {
+      background: #444;
+    }
+  }
+  .text- {
+    color: white;
+  }
+  .border- {
+    color: white;
+  }
+  select, input {
+    background: rgba(0, 0, 0, 0)!important;
+    color: #dee2e6!important;
+    &:active, &:focus {
+      color: #dee2e6!important;
+    }
+  }
+  .nav-tabs {
+    border-color: rgb(100, 100, 100);
+    .nav-item {
+      .nav-link {
+        background: rgb(50, 50, 50);
+        &.active {
+          color: white;
+          border-color: rgb(100, 100, 100);
+          background: rgb(0, 0, 0);
+        }
+      }
+    }
+  }
+
+  .list-group .list-group-item {
+    color: #fff;
+    .form-check-input {
+      &:checked {
+        &:active, &:focus {
+          background-color: #0d6efd;
+        }
+      }
+    }
+  }
+
+  &.white {
+    background-color: rgb(255, 255, 255)!important;
+    color:rgb(0, 0, 0);
+    .route-square {
+      background-color: rgb(230, 230, 230);
+      color: rgb(0, 0, 0);
+      button {
+        background: rgb(255, 255, 255);
+        border-color: rgb(210, 210, 210);
+      }
+    }
+    .text- {
+      color: rgb(31, 31, 31);
+    }
+    .border- {
+      color: rgb(31, 31, 31);
+    }
+    select, input {
+      background: rgba(255, 255, 255, 0.6);
+      color: rgb(31, 31, 31)!important;
+      &:active, &:focus {
+        color: rgb(31, 31, 31)!important;
+      }
+    }
+    .nav-tabs .nav-item .nav-link {
+      background: rgb(230, 230, 230);
+      &.active {
+        color: rgb(0, 0, 0);
+        background: rgb(255, 255, 255);
+      }
+    }
+    .list-group .list-group-item {
+      color: rgb(0, 0, 0);
+      .form-check-input {
+        &:checked {
+          &:active, &:focus {
+            background-color: #0d6efd;
+          }
+        }
+      }
+    }
+  }
 }
